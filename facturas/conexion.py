@@ -22,3 +22,12 @@ except:
     print "Posibles errores de importacion"
     sys.exit(1)
         
+        
+def insertarc(fila):
+    try: 
+        cur.execute("insert into cliente(dni,nombre,apellido,direccion,localidad,telefono, mail) values (?,?,?,?,?,?,?)",fila)
+        print('insertado')
+        conex.commit()
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
