@@ -9,7 +9,7 @@ try:
     
     #from Crypto.Cipher import DES
     import sqlite3 
-    import time
+    #import time
       #creamos el cifrador
     #cipher = DES.new('12345678')
     bbdd = 'facturas.sqlite'
@@ -42,6 +42,15 @@ def listac():
     except sqlite3.OperationalError as e:
         print(e)
         conex.rollback()
+def listacf(dni):
+    try: 
+        cur.execute("select * from cliente where dni = ?", (dni,))
+        listado = cur.fetchall()
+        print('listadoclifac')
+        return listado
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
         
         
 def insertarp(filap):
@@ -56,11 +65,25 @@ def insertarp(filap):
         
 def listap():
     try: 
-        cur.execute("select idproducto,nombre,precio,stock from producto")
+        cur.execute("select idproducto,nombre, precio, stock from producto")
         listado = cur.fetchall()
         print('listadopro')
         return listado
     except sqlite3.OperationalError as e:
         print(e)
         conex.rollback()
+       
         
+def insertarfac(filafac):
+    try: 
+        cur.execute("insert into factura(idcliente,fecha) values(?,?)", filafac)
+        print('insertado')
+        conex.commit()
+        cur.execute("select numfactura from factura order by numfactura asc limit 1")          
+        codigo = cur.fetchone()    
+        return codigo
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+    
+    

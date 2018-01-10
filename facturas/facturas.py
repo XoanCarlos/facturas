@@ -3,11 +3,10 @@
 # and open the template in the editor.
 # -*- coding: utf-8 -*-
 
-if __name__ == "__main__":
-    print("Hello World")
-
+import os
 import gi
 import conexion
+import time
 gi.require_version('Gtk','3.0')
 from gi.repository import Gtk
 
@@ -26,20 +25,25 @@ class facturas:
         self.entprod = b.get_object('entpro')
         self.entprecio = b.get_object('entprecio')
         self.entstock = b.get_object('entstock')
+        self.entdnifac = b.get_object('entdnifac')
         
+        self.lblfac = b.get_object('lblfac')
+        
+        self.treeclientes = b.get_object('treeclientes')
         self.listclient = b.get_object('listcliente')
         self.listprod = b.get_object('listproductos')
         
         dic= {'on_ventana_destroy': self.salir,'on_btnSalir_clicked': self.salir,
         'on_btnalta_clicked': self.insertc, 'on_btnsalirp_clicked': self.salir,
-        'on_btnaltap_clicked': self.insertp,'on_notebook1_select_page': self.cargap,        
+        'on_btnaltap_clicked': self.insertp,'on_notebook1_select_page': self.cargap,
+        "on_treeclientes_cursor_changed": self.cargarcli, 'on_entfact_clicked': self.altafac,
+        
         }
     
-        
         b.connect_signals(dic)
         self.ventana.show_all()
         self.listarc()
-        # self.listarp()
+        self.listarp()
         
     def salir(self, widget):
         Gtk.main_quit()
@@ -79,12 +83,33 @@ class facturas:
         for registro in lista:
             self.listclient.append(registro)
         
+    def cargarcli(self, widget):
+        model, iter = self.treeclientes.get_selection().get_selected()
+#        model es el modelo de la tabla de dato, iter ese un numero que 
+#        identifica que registro es
+        
+        if iter != None:
+            sdni = model.get_value(iter, 0)
+            lista = conexion.listacf(sdni)
+            for registro in lista:
+                self.entdni.set_text(registro[0])
+                self.entnome.set_text(registro[1])
+                self.entapel.set_text(registro[2])
+                self.entdire.set_text(registro[3])
+                self.entloc.set_text(registro[4])
+                self.enttel.set_text(registro[5])
+                self.entmail.set_text(registro[6])
+            
+                self.entdnifac.set_text(sdni)    
+    
+    
     #trabajamos con el producto
     
     def insertp(self, widget):
         self.prod = self.entprod.get_text()
-        self.precio = self.entprecio.get_text()
-        self.stock = self.entstock.get_text()
+        self.precio = float(self.entprecio.get_text())
+        #self.precio = '{0:.2f}'.format(self.precio)
+        self.stock = float(self.entstock.get_text())
         registro = (self.prod, self.precio, self.stock)
         
         if self.prod != '' or self.precio !='':
@@ -107,7 +132,29 @@ class facturas:
     def listarp(self):
         lista = conexion.listap()
         for registro in lista:
+            item0 = int(registro[0])
+            item1 = str(registro[1])
+            item2 = float(registro[2])
+            item3 = float(registro[3])
+            
+            registro = [item0, item1, item2, item3]
             self.listprod.append(registro)
+  
+  # trabajamos con facturas
+    def altafac(self, widget):
+        self.fecha = time.strftime("%d/%m/%y")
+        self.dnicli = self.entdnifac.get_text()
+        registro = (self.fecha, self.dnicli)
+        
+        if self.dnicli != '':
+            codigo = conexion.insertarfac(registro)
+            self.lblfac.set_text('')
+            self.lblfac.set_text(str(codigo))
+        else:
+            print('Falta dni')
+        
+        
+        
     
 if __name__  ==  '__main__':
     main = facturas()
