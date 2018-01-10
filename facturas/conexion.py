@@ -23,11 +23,44 @@ except:
     sys.exit(1)
         
         
-def insertarc(fila):
+def insertarc(filac):
     try: 
-        cur.execute("insert into cliente(dni,nombre,apellido,direccion,localidad,telefono, mail) values (?,?,?,?,?,?,?)",fila)
+        cur.execute("insert into cliente(dni,nombre,apellido,direccion,localidad,telefono, mail) values (?,?,?,?,?,?,?)", filac)
         print('insertado')
         conex.commit()
+        return True
     except sqlite3.OperationalError as e:
         print(e)
         conex.rollback()
+        
+def listac():
+    try: 
+        cur.execute("select dni,apellido,nombre,telefono from cliente")
+        listado = cur.fetchall()
+        print('listadocli')
+        return listado
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+        
+        
+def insertarp(filap):
+    try: 
+        cur.execute("insert into producto(nombre,precio,stock) values(?,?,?)", filap)
+        print('insertado')
+        conex.commit()
+        return True
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+        
+def listap():
+    try: 
+        cur.execute("select idproducto,nombre,precio,stock from producto")
+        listado = cur.fetchall()
+        print('listadopro')
+        return listado
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+        
