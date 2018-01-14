@@ -65,7 +65,7 @@ def insertarp(filap):
         
 def listap():
     try: 
-        cur.execute("select idproducto,nombre, precio, stock from producto")
+        cur.execute("select idproducto, nombre, precio, stock from producto")
         listado = cur.fetchall()
         print('listadopro')
         return listado
@@ -81,7 +81,8 @@ def insertarfac(filafac):
         conex.commit()
         cur.execute("select numfactura from factura order by numfactura asc limit 1")          
         codigo = cur.fetchone()    
-        return codigo
+        while codigo is not None:
+            return str(codigo)
     except sqlite3.OperationalError as e:
         print(e)
         conex.rollback()

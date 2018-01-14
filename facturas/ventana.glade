@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkListStore" id="listcliente">
@@ -14,6 +14,16 @@
       <column type="gchararray"/>
     </columns>
   </object>
+  <object class="GtkListStore" id="listfact">
+    <columns>
+      <!-- column-name Número Factura -->
+      <column type="gint"/>
+      <!-- column-name Fecha Factura -->
+      <column type="gchararray"/>
+      <!-- column-name Cliente -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkListStore" id="listproductos">
     <columns>
       <!-- column-name codigo -->
@@ -23,6 +33,20 @@
       <!-- column-name precio -->
       <column type="gfloat"/>
       <!-- column-name stock -->
+      <column type="gfloat"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="listventa">
+    <columns>
+      <!-- column-name idventa -->
+      <column type="gint"/>
+      <!-- column-name idfactura -->
+      <column type="gint"/>
+      <!-- column-name idproducto -->
+      <column type="gint"/>
+      <!-- column-name cantidad -->
+      <column type="gfloat"/>
+      <!-- column-name precio -->
       <column type="gfloat"/>
     </columns>
   </object>
@@ -387,6 +411,7 @@
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                            <property name="resizable">True</property>
                             <property name="title" translatable="yes">DNI</property>
                             <property name="expand">True</property>
                             <property name="reorderable">True</property>
@@ -896,7 +921,128 @@
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkScrolledWindow">
+                    <property name="height_request">150</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <object class="GtkTreeView" id="treefact">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="margin_left">4</property>
+                        <property name="margin_right">4</property>
+                        <property name="margin_top">4</property>
+                        <property name="margin_bottom">4</property>
+                        <property name="model">listfact</property>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection"/>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="title" translatable="yes">Numero Factura</property>
+                            <property name="expand">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="title" translatable="yes">Fecha Factura</property>
+                            <property name="expand">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="title" translatable="yes">Codigo Cliente</property>
+                            <property name="expand">True</property>
+                            <property name="reorderable">True</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="hexpand">True</property>
+                    <property name="label" translatable="yes">Líneas de Venta</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="height_request">400</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <object class="GtkTreeView" id="treelinventa">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="model">listventa</property>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection"/>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="title" translatable="yes">Idventa</property>
+                            <property name="expand">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="title" translatable="yes">IdFactura</property>
+                            <property name="expand">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="title" translatable="yes">Idproducto</property>
+                            <property name="expand">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="title" translatable="yes">Cantidad</property>
+                            <property name="expand">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="title" translatable="yes">Precio</property>
+                            <property name="expand">True</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
+                  </packing>
                 </child>
               </object>
               <packing>
@@ -907,7 +1053,7 @@
               <object class="GtkLabel" id="lblfacturar">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Facturar</property>
+                <property name="label" translatable="yes">Facturación</property>
               </object>
               <packing>
                 <property name="position">2</property>

@@ -149,10 +149,9 @@ class facturas:
         if self.dnicli != '':
             codigo = conexion.insertarfac(registro)
             self.lblfac.set_text('')
-            self.lblfac.set_text(str(codigo))
+            self.lblfac.set_text(codigo[1])
         else:
             print('Falta dni')
-        
         
         
     
