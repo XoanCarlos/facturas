@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkListStore" id="listcliente">
@@ -21,6 +21,12 @@
       <!-- column-name Fecha -->
       <column type="gchararray"/>
       <!-- column-name Cliente -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="listprodcmb">
+    <columns>
+      <!-- column-name Producto -->
       <column type="gchararray"/>
     </columns>
   </object>
@@ -1002,16 +1008,6 @@
                     <property name="margin_bottom">4</property>
                     <property name="column_homogeneous">True</property>
                     <child>
-                      <object class="GtkComboBox" id="combobox1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">0</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkLabel" id="label16">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1060,7 +1056,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="entry1">
+                      <object class="GtkEntry" id="entventa">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                       </object>
@@ -1074,7 +1070,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="halign">end</property>
-                        <property name="label" translatable="yes">Precio:</property>
+                        <property name="label" translatable="yes">Precio(€):</property>
                         <attributes>
                           <attribute name="weight" value="semibold"/>
                         </attributes>
@@ -1110,6 +1106,25 @@
                       </object>
                       <packing>
                         <property name="left_attach">5</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="cmbproducto">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="model">listprodcmb</property>
+                        <property name="has_frame">False</property>
+                        <signal name="changed" handler="on_cmbproducto_changed" swapped="no"/>
+                        <child>
+                          <object class="GtkCellRendererText"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
                         <property name="top_attach">0</property>
                       </packing>
                     </child>

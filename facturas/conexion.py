@@ -110,3 +110,36 @@ def bajafac(fac):
         conex.rollback()
         
         
+        
+def cargarprod():
+    try:
+        cur.execute("select nombre from producto order by nombre")
+        listado = cur.fetchall()
+        conex.commit()
+        return listado
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+    
+def precio(item):
+    try:
+        cur.execute("select idproducto, precio from producto where nombre=?", (item,))
+        lista = cur.fetchall()
+        conex.commit()
+        return lista
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+        
+def grabarventa(filaventa):
+    try:
+        cur.execute("insert into venta(idfactura,idproducto,cantidad,precio) values(?,?,?,?)", filaventa)
+        print('insertado')
+        conex.commit()
+        cur.execute("select numfactura from factura order by numfactura desc limit 1")          
+        codigo = cur.fetchone()    
+        while codigo is not None:
+            return codigo
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()

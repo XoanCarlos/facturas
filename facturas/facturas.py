@@ -26,8 +26,12 @@ class facturas:
         self.entprecio = b.get_object('entprecio')
         self.entstock = b.get_object('entstock')
         self.entdnifac = b.get_object('entdnifac')
-        
+        self.entventa = b.get_object('entventa')
+         
         self.lblfac = b.get_object('lblfac')
+        self.lblprecio = b.get_object('lblprecio')
+        
+        self.cmbproducto = b.get_object('cmbproducto')
         
         self.treeclientes = b.get_object('treeclientes')
         self.treefac =b.get_object("treefac")
@@ -36,13 +40,15 @@ class facturas:
         self.listprod = b.get_object('listproductos')
         self.listfact = b.get_object('listfact')
         self.listventa = b.get_object('listventa')
+        self.listprodcmb = b.get_object('listprodcmb')
+    
         
         dic= {'on_ventana_destroy': self.salir,'on_btnSalir_clicked': self.salir,
         'on_btnalta_clicked': self.insertc, 'on_btnsalirp_clicked': self.salir,
         'on_btnaltap_clicked': self.insertp,'on_notebook1_select_page': self.cargap,
         "on_treeclientes_cursor_changed": self.cargarcli, 'on_entfact_clicked': self.altafac,
         "on_entanulfac_clicked": self.bajafac, "on_treefac_cursor_changed": self.cargarfac,
-        "on_btnventa_clicked": self.venta,
+        "on_btnventa_clicked": self.venta, "on_cmbproducto_changed": self.cargaprecio,
         }
     
         b.connect_signals(dic)
@@ -50,6 +56,8 @@ class facturas:
         self.listarc()
         self.listarp()
         self.listarfac()
+        self.cargarcmb()
+        
         
     def salir(self, widget):
         Gtk.main_quit()
@@ -154,14 +162,14 @@ class facturas:
         
         if self.dnicli != '':
             codigo = conexion.insertarfac(registro)
-            self.lblfac.set_text(str(codigo))
+            self.lblfac.set_text(str(codigo[0]))
             self.listfact.clear()
             self.listarfac()
             self.facidv = self.lblfac.get_text()
             self.facnumv = self.lblfac.get_text()
             
-            registrov = [int(self.facnumv), int(self.facnumv), int(self.facnumv), float(self.facnumv), float(self.facnumv)]
-            self.listventa.append(registrov)
+            #registrov = [int(self.facnumv), int(self.facnumv), int(self.facnumv), float(self.facnumv), float(self.facnumv)]
+            #self.listfact.append(registrov)
             
         else:
             print('Falta dni')
@@ -203,9 +211,32 @@ class facturas:
     def venta(self,widget):
         self.facnumv = self.lblfac.get_text()
         self.facdniv = self.entdnifac.get_text()
+        self.productov = self.idprod
+        self.preciov = self.lblprecio.get_text()
+        self.cantidadv = self.entventa.get_text()
+        regventa = (self.facnumv,self.productov,self.cantidadv,self.preciov)
+        if regventa is not None:
+            conexion.grabarventa(regventa)
+            #self.listvent.clear()
+            #self.listarventa()
         
+    def cargarcmb(self):
+        listado = conexion.cargarprod()
+        for row in listado:
+            self.listprodcmb.append(row)
 
-
+    def cargaprecio(self, widget):
+        index = self.cmbproducto.get_active()
+        model = self.cmbproducto.get_model()
+        self.item = model[index][0]
+        
+        listado = conexion.precio(self.item)
+        for row in listado:
+          self.idprod = int(row[0])  
+          self.lblprecio.set_text(str(row[1]))
+       
+        
+        
 if __name__  ==  '__main__':
     main = facturas()
     Gtk.main()
