@@ -30,20 +30,26 @@ class facturas:
         self.lblfac = b.get_object('lblfac')
         
         self.treeclientes = b.get_object('treeclientes')
+        self.treefac =b.get_object("treefac")
+        
         self.listclient = b.get_object('listcliente')
         self.listprod = b.get_object('listproductos')
+        self.listfact = b.get_object('listfact')
+        self.listventa = b.get_object('listventa')
         
         dic= {'on_ventana_destroy': self.salir,'on_btnSalir_clicked': self.salir,
         'on_btnalta_clicked': self.insertc, 'on_btnsalirp_clicked': self.salir,
         'on_btnaltap_clicked': self.insertp,'on_notebook1_select_page': self.cargap,
         "on_treeclientes_cursor_changed": self.cargarcli, 'on_entfact_clicked': self.altafac,
-        
+        "on_entanulfac_clicked": self.bajafac, "on_treefac_cursor_changed": self.cargarfac,
+        "on_btnventa_clicked": self.venta,
         }
     
         b.connect_signals(dic)
         self.ventana.show_all()
         self.listarc()
         self.listarp()
+        self.listarfac()
         
     def salir(self, widget):
         Gtk.main_quit()
@@ -141,20 +147,65 @@ class facturas:
             self.listprod.append(registro)
   
   # trabajamos con facturas
-    def altafac(self, widget):
+    def altafac (self, widget):
         self.fecha = time.strftime("%d/%m/%y")
         self.dnicli = self.entdnifac.get_text()
         registro = (self.fecha, self.dnicli)
         
         if self.dnicli != '':
             codigo = conexion.insertarfac(registro)
-            self.lblfac.set_text('')
-            self.lblfac.set_text(codigo[1])
+            self.lblfac.set_text(str(codigo))
+            self.listfact.clear()
+            self.listarfac()
+            self.facidv = self.lblfac.get_text()
+            self.facnumv = self.lblfac.get_text()
+            
+            registrov = [int(self.facnumv), int(self.facnumv), int(self.facnumv), float(self.facnumv), float(self.facnumv)]
+            self.listventa.append(registrov)
+            
         else:
             print('Falta dni')
         
+    def listarfac(self):
+        lista = conexion.listafac()
+        for registro in lista:
+            item0 = int(registro[0])
+            item1 = str(registro[1])
+            item2 = str(registro[2])
+            registro = [item0, item1, item2]
+            self.listfact.append(registro)
         
-    
+    def bajafac(self, widget):
+        self.fac = self.lblfac.get_text()
+        if self.fac != "":
+            conexion.bajafac(self.fac)
+            self.listfact.clear()
+            self.lblfac.set_text('')
+        else:
+            print "el campo matricula no puede estar vacio"
+        
+        self.listarfac()
+        
+    def cargarfac(self, widget):
+        model, iter = self.treefac.get_selection().get_selected()
+#        model es el modelo de la tabla de dato, iter ese un numero que 
+#        identifica que registro es
+        
+        if iter != None:
+            sfac = model.get_value(iter, 0)
+            sdni = model.get_value(iter, 2)
+            
+            self.lblfac.set_text(str(sfac))    
+            self.entdnifac.set_text(sdni)  
+            
+## EMPEZAMOS CON LAS VENTAS
+
+    def venta(self,widget):
+        self.facnumv = self.lblfac.get_text()
+        self.facdniv = self.entdnifac.get_text()
+        
+
+
 if __name__  ==  '__main__':
     main = facturas()
     Gtk.main()

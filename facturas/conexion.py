@@ -1,6 +1,7 @@
 # To change this license header, choose License Headers in Project Properties.
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
+# -*- coding: utf-8 -*-
 
 __author__ = "jcarlos"
 __date__ = "$Oct 27, 2017 9:09:03 AM$"
@@ -76,15 +77,36 @@ def listap():
         
 def insertarfac(filafac):
     try: 
-        cur.execute("insert into factura(idcliente,fecha) values(?,?)", filafac)
+        cur.execute("insert into factura(fecha,idcliente) values(?,?)", filafac)
         print('insertado')
         conex.commit()
-        cur.execute("select numfactura from factura order by numfactura asc limit 1")          
+        cur.execute("select numfactura from factura order by numfactura desc limit 1")          
         codigo = cur.fetchone()    
         while codigo is not None:
-            return str(codigo)
+            return codigo
     except sqlite3.OperationalError as e:
         print(e)
         conex.rollback()
     
-    
+def listafac():
+    try: 
+        cur.execute("select * from factura")
+        listado = cur.fetchall()
+        print('listadofac')
+        return listado
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+        
+ 
+def bajafac(fac):
+    try:
+        print("fac")
+        cur.execute("delete from factura where numfactura = ?", (fac,))
+        print('bajafac')
+        conex.commit()
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+        
+        
