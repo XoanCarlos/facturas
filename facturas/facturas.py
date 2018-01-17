@@ -184,9 +184,9 @@ class facturas:
             self.listfact.append(registro)
         
     def bajafac(self, widget):
-        self.fac = self.lblfac.get_text()
-        if self.fac != "":
-            conexion.bajafac(self.fac)
+        self.facnumv = self.lblfac.get_text()
+        if self.facnumv != "":
+            conexion.bajafac(self.facnumv)
             self.listfact.clear()
             self.lblfac.set_text('')
         else:
@@ -200,11 +200,14 @@ class facturas:
 #        identifica que registro es
         
         if iter != None:
-            sfac = model.get_value(iter, 0)
+            self.facnumv = model.get_value(iter, 0)
             sdni = model.get_value(iter, 2)
             
-            self.lblfac.set_text(str(sfac))    
-            self.entdnifac.set_text(sdni)  
+            self.lblfac.set_text(str(self.facnumv))
+            self.facnumv = self.lblfac.get_text()
+            self.entdnifac.set_text(sdni)
+            self.listarventa()
+            
             
 ## EMPEZAMOS CON LAS VENTAS
 
@@ -217,8 +220,9 @@ class facturas:
         regventa = (self.facnumv,self.productov,self.cantidadv,self.preciov)
         if regventa is not None:
             conexion.grabarventa(regventa)
-            #self.listvent.clear()
-            #self.listarventa()
+        self.listvent.clear()
+        print self.facnumv
+        self.listarventa(self.facnumv)
         
     def cargarcmb(self):
         listado = conexion.cargarprod()
@@ -235,7 +239,11 @@ class facturas:
           self.idprod = int(row[0])  
           self.lblprecio.set_text(str(row[1]))
        
+    def listarventa(self):
         
+        listav = conexion.listav(self.facnumv)
+        for registro in listav:
+            self.listventa.append(registro)
         
 if __name__  ==  '__main__':
     main = facturas()

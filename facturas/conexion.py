@@ -143,3 +143,15 @@ def grabarventa(filaventa):
     except sqlite3.OperationalError as e:
         print(e)
         conex.rollback()
+    
+def listav(idf):
+    try:
+        idf = str(idf)
+        
+        cur.execute("select * from venta where idfactura=?", (idf,) )
+        listado = cur.fetchall()
+        print(listado)
+        return listado
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
