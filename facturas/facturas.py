@@ -235,19 +235,28 @@ class facturas:
     def cargaprecio(self, widget):
         index = self.cmbproducto.get_active()
         model = self.cmbproducto.get_model()
-        self.item = model[index][0]
+        self.idprod = model[index][0]
         
         
-        listado = conexion.precio(self.item)
+        
+        listado = conexion.precio(self.idprod)
         for row in listado:
-          self.idprod = int(row[0])  
+          self.nomprod = row[0]  
           self.lblprecio.set_text(str(row[1]))
        
     def listarventa(self):
         
         listav = conexion.listav(self.facnumv)
         for registro in listav:
+            item0 = int(registro[0])
+            item1 = int(registro[1])
+            item2 = int(registro[2])
+            item3 = float(registro[3])
+            item4 = float(registro[4])
+            registro = [item0, item1, item2, item3, item4]
             self.listventa.append(registro)
+    
+    # EMPEZAMOS CON LA FACTURA
     
     def impfac(self, widget):
         factura = self.lblfac.get_text()

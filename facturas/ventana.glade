@@ -26,6 +26,8 @@
   </object>
   <object class="GtkListStore" id="listprodcmb">
     <columns>
+      <!-- column-name Codigo -->
+      <column type="gint"/>
       <!-- column-name Producto -->
       <column type="gchararray"/>
     </columns>
@@ -61,7 +63,7 @@
     <property name="title" translatable="yes">FACTURACION</property>
     <property name="window_position">center</property>
     <property name="default_width">1024</property>
-    <property name="default_height">768</property>
+    <property name="default_height">700</property>
     <property name="gravity">north</property>
     <signal name="destroy" handler="on_ventana_destroy" swapped="no"/>
     <child>
@@ -1123,6 +1125,12 @@
                             <attribute name="text">0</attribute>
                           </attributes>
                         </child>
+                        <child>
+                          <object class="GtkCellRendererText"/>
+                          <attributes>
+                            <attribute name="text">1</attribute>
+                          </attributes>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -1221,9 +1229,9 @@
                             <property name="title" translatable="yes">Producto</property>
                             <property name="expand">True</property>
                             <child>
-                              <object class="GtkCellRendererCombo" id="cellrenderercombo1"/>
+                              <object class="GtkCellRendererText" id="cellrenderertext16"/>
                               <attributes>
-                                <attribute name="model">2</attribute>
+                                <attribute name="text">2</attribute>
                               </attributes>
                             </child>
                           </object>

@@ -113,7 +113,7 @@ def bajafac(fac):
         
 def cargarprod():
     try:
-        cur.execute("select nombre from producto order by nombre")
+        cur.execute("select idproducto, nombre from producto order by nombre")
         listado = cur.fetchall()
         conex.commit()
         return listado
@@ -123,7 +123,7 @@ def cargarprod():
     
 def precio(item):
     try:
-        cur.execute("select idproducto, precio from producto where nombre=?", (item,))
+        cur.execute("select nombre, precio from producto where idproducto=?", (item,))
         lista = cur.fetchall()
         conex.commit()
         return lista
