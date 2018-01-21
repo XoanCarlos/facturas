@@ -41,7 +41,9 @@ def getFactura(factura, cliente):
 
     cabecera = "Producto                     Cantidad                     Precio Unitario                 Precio Total"
     pdf.cell(0,40, cabecera , 0, 1, 'C')
+    pdf.line(164, 50, 200, 50)
     pdf.line(20, 100, 190, 100)
+    pdf.line(20, 106, 190, 106)
     suma = 0
     iva = 0.21
     cuotaIVA = 0
@@ -54,20 +56,19 @@ def getFactura(factura, cliente):
         texto = texto + ' ' + str(item[4])
         precio_total = item[3] * item[4]
         texto = texto + ' ' + str(precio_total)
-        pdf.ln(20)
+        pdf.ln(15)
         #texto = texto + '\n'
         #suma = suma + precio_total
         
     
-    
-    print("\n\nSuma de conceptos   IVA %    Cuota IVA    Importe Total")
-    
+    pdf.ln(70)
+    pdf.set_font('Arial','B', 10)
+    lineatotal = "Suma de conceptos                 IVA %                Cuota IVA                   Importe Total"
+    pdf.cell(0, 7, lineatotal, 1, 1, 'C')
     cuotaIVA = suma * iva
     total = suma + cuotaIVA
     
-    print(str(suma) + '\t' + "21,00" + '\t' +  str(cuotaIVA)+ '\t' + str(total))
-
-
+ 
     archivo = 'dos.pdf'
 
     pdf.output(archivo, 'F')
