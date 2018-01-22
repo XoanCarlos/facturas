@@ -150,6 +150,20 @@ def listav(idf):
         
         cur.execute("select * from venta where idfactura=?", (idf,) )
         listado = cur.fetchall()
+        print listado
+        
+        return listado
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+        
+def verprod(idf):
+    try:
+        idf = str(idf)
+        
+        cur.execute("select nombre from producto where idproducto=?", (idf,) )
+        listado = cur.fetchone()
+        print listado
         
         return listado
     except sqlite3.OperationalError as e:

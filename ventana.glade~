@@ -1122,12 +1122,6 @@
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext17"/>
                           <attributes>
-                            <attribute name="text">0</attribute>
-                          </attributes>
-                        </child>
-                        <child>
-                          <object class="GtkCellRendererText" id="cellrenderertext18"/>
-                          <attributes>
                             <attribute name="text">1</attribute>
                           </attributes>
                         </child>

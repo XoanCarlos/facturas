@@ -35,7 +35,7 @@ def getFactura(factura, cliente):
     for row in detallesCliente:
         pdf.cell(0,8, "DATOS CLIENTE", 0, 1, 'R')
         pdf.cell(0,8,"DNI/CIF : " + str(row[0]), 0,1,'R')
-        pdf.cell(0,8, str(row[2]) + "  " +  str(row[1]), 0,1,'R')
+        pdf.cell(0,8, "Nombre: " + str(row[2]) + "  " +  str(row[1]), 0,1,'R')
         pdf.cell(0,8,"Direccion : " + str(row[3]) + "     Localidad: " + row[4], 0,1,'R')
         pdf.cell(0,8,"Telefono : " + str(row[5]) + "    Mail:" + row[6], 0,1,'R')
 
@@ -48,25 +48,42 @@ def getFactura(factura, cliente):
     iva = 0.21
     cuotaIVA = 0
     total = 0
-    texto = ''
+    x = 10
+    y = 110
     for item in detallesVenta:
-        pdf.set_font('Arial','', 8)
-        #texto = texto + conexion.nombreProducto(str(item[2]))
-        texto = texto + ' ' + str(item[3])
-        texto = texto + ' ' + str(item[4])
-        precio_total = item[3] * item[4]
-        texto = texto + ' ' + str(precio_total)
-        pdf.ln(15)
-        #texto = texto + '\n'
-        #suma = suma + precio_total
         
-    
+        pdf.set_font('Arial','', 10)
+        #texto = texto + conexion.nombreProducto(str(item[2]))
+        prodnom = conexion.verprod(str(item[2]))
+        cantidad = "{0:.2f}".format(float(item[3]))
+        precio = float(item[4])
+        subtotalv = float(item[3]) * float(item[4])
+        x= 20
+        pdf.text(x,y, "  |  " + str(prodnom[0]))
+        x = x + 50
+        pdf.text(x,y, "  |  " + str(cantidad))
+        x = x + 40
+        pdf.text(x,y, "  |  " + str(precio))
+        x = x + 55
+        pdf.text(x,y, "  |  " + str(subtotalv))
+        x = x + 15
+        pdf.text(x,y, "  |  " )
+        y = y + 5
+        #texto = texto + '\n'
+        suma = suma + subtotalv
+        
+      
+    iva = suma * 0.21
+    total = iva + suma
+    suma = "{0:.2f}".format(suma)  
+    iva = "{0:.2f}".format(iva)
+    total = "{0:.2f}".format(total)
     pdf.ln(70)
     pdf.set_font('Arial','B', 10)
     lineatotal = "Suma de conceptos                 IVA %                Cuota IVA                   Importe Total"
     pdf.cell(0, 7, lineatotal, 1, 1, 'C')
-    cuotaIVA = suma * iva
-    total = suma + cuotaIVA
+    pdf.text (115,210,str(iva) + " Euros")
+    pdf.text(155,210, str(total) + " Euros" )
     
  
     archivo = 'dos.pdf'

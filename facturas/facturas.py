@@ -59,7 +59,7 @@ class facturas:
         self.listarc()
         self.listarp()
         self.listarfac()
-        self.cargarcmb()
+        
         
         
     def salir(self, widget):
@@ -118,8 +118,7 @@ class facturas:
                 self.entmail.set_text(registro[6])
             
                 self.entdnifac.set_text(sdni)    
-    
-    
+       
     #trabajamos con el producto
     
     def insertp(self, widget):
@@ -136,10 +135,14 @@ class facturas:
                 self.listarp()
             else:
                 print 'error alta producto'
-    
+        self.listprodcmb.clear()
+        self.cargarcmb()
+        
+        
     def cargap(self):
         self.listarp()
-                
+        self.listprodcmb.clear()
+        self.cargarcmb()
     
     def limpiarp(self):
         self.entprod.set_text('')
@@ -156,7 +159,8 @@ class facturas:
             
             registro = [item0, item1, item2, item3]
             self.listprod.append(registro)
-  
+        self.listprodcmb.clear()
+        self.cargarcmb()
   # trabajamos con facturas
     def altafac (self, widget):
         self.fecha = time.strftime("%d/%m/%y")
@@ -227,10 +231,13 @@ class facturas:
             self.listventa.clear()
             self.listarventa()
         
+        
     def cargarcmb(self):
         listado = conexion.cargarprod()
         for row in listado:
+            fruta = str(row[1])
             self.listprodcmb.append(row)
+        
 
     def cargaprecio(self, widget):
         index = self.cmbproducto.get_active()
@@ -238,19 +245,19 @@ class facturas:
         self.idprod = model[index][0]
         
         
-        
-        listado = conexion.precio(self.idprod)
+        listado = conexion.precio(int(self.idprod))
         for row in listado:
           self.nomprod = row[0]  
           self.lblprecio.set_text(str(row[1]))
        
+       
     def listarventa(self):
-        
         listav = conexion.listav(self.facnumv)
         for registro in listav:
             item0 = int(registro[0])
             item1 = int(registro[1])
-            item2 = int(registro[2])
+            resul= conexion.verprod(str(registro[2]))
+            item2 = str(resul[0])
             item3 = float(registro[3])
             item4 = float(registro[4])
             registro = [item0, item1, item2, item3, item4]
